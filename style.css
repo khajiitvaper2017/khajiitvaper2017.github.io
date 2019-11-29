@@ -1,0 +1,21 @@
+body{
+
+	font-family: Comic Sans MS;
+
+
+
+	background-color: #333333;
+	color:#FFFFFF;
+	color-interpolation-filters: #FFFFFF;
+}
+
+div{
+		margin-top: 50px;
+
+	text-align: center;
+}
+a:visited{
+		color:#FF00FF;
+}a:link{
+		color:#FFFF00;
+}
