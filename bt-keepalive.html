@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BT Keepalive</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0f0f0f;
+      color: #e0e0e0;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      gap: 20px;
+    }
+    h1 { font-size: 1.1rem; font-weight: 500; opacity: 0.6; letter-spacing: 0.05em; }
+    #btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid #444;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    #btn.active {
+      border-color: #4caf50;
+      background: #1a2e1a;
+    }
+    #status {
+      font-size: 0.85rem;
+      opacity: 0.45;
+    }
+    #status.active { opacity: 0.9; color: #4caf50; }
+  </style>
+</head>
+<body>
+  <h1>BT KEEPALIVE</h1>
+  <button id="btn">▶</button>
+  <span id="status">stopped</span>
+
+  <script>
+    let ctx, oscillator, gain;
+    let running = false;
+    const btn = document.getElementById('btn');
+    const status = document.getElementById('status');
+
+    function start() {
+      ctx = new AudioContext();
+      oscillator = ctx.createOscillator();
+      gain = ctx.createGain();
+
+      // 22kHz - above the 20kHz upper bound of human hearing
+      oscillator.frequency.value = 22000;
+      oscillator.type = 'sine';
+
+      // Extremely low gain — just enough that the audio stream is live
+      gain.gain.value = 0.001;
+
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+      oscillator.start();
+
+      running = true;
+      btn.textContent = '⏹';
+      btn.classList.add('active');
+      status.textContent = 'running — headphones will stay connected';
+      status.classList.add('active');
+    }
+
+    function stop() {
+      oscillator.stop();
+      ctx.close();
+      running = false;
+      btn.textContent = '▶';
+      btn.classList.remove('active');
+      status.textContent = 'stopped';
+      status.classList.remove('active');
+    }
+
+    btn.addEventListener('click', () => {
+      if (running) stop(); else start();
+    });
+  </script>
+</body>
+</html>
