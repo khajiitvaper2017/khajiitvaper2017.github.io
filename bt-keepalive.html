@@ -55,8 +55,7 @@
       oscillator = ctx.createOscillator();
       gain = ctx.createGain();
 
-      // 22kHz - above the 20kHz upper bound of human hearing
-      oscillator.frequency.value = 22000;
+      oscillator.frequency.value = 18000;
       oscillator.type = 'sine';
 
       // Extremely low gain — just enough that the audio stream is live
